@@ -1,0 +1,78 @@
+server:
+  port: 8081
+# ==============================================================================================
+# 1) DataSource : DB ??? ??, driver ? DB ??? ??.
+# 2) JPA & Hibernate
+# ==============================================================================================
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # ?????? ?? ??? DB?? ??? ? ?????. (???? ??) : url=jdbc:sqlserver://RDS??????:????/????????
+    url: jdbc:mysql://db-instance-1.c6k0l4lobqyc.ap-northeast-2.rds.amazonaws.com/videoChattingService
+    username: root
+    password: rootroot
+  jpa:
+    database: mysql  # ?? DB? ????? ??
+    showSql: true
+    open-in-view: false    # OSIV(Open Session In View)? ?????? ??? ???? ?????.
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl    # ????? ??(_)? ??? ??, ?? ????? ??? ????. (logisCode? logis_code? ??? ???.)
+    generate-ddl: false    # generate-ddl? true? ???? ?? ???? ??? ?? ?? ??? DDL ?? ???? DB? ????.
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect    # jpa? sql? ???? ??? ? sql dialect(??)? DBMS ?? ???. ?? ?? MSSQL (Microsoft SQL Server 2008) ? ?? ?? ???.
+        format_sql: true    # ???? ???? ??? ??? ??? ???.
+        use_sql_comments: true    # ???? ??? ?????.
+  messages:   # ?? ??? ?? (i8n ?? ? ??? ?? ??) ================================
+    basename: i18n/exception
+    encoding: UTF-8
+
+# ==============================================================================================
+# Swagger (NullPointerException ??)
+# ==============================================================================================
+---
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+
+
+# ==============================================================================================
+# Logging : ???.
+# ==============================================================================================
+# ??? ?? ?? ?? ?? ????? ????? ????.
+---
+# ==============================================================================================
+#  hibernate sql logging
+# ==============================================================================================
+
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace
+---
+# ==============================================================================================
+#  utf-8 ??
+# ==============================================================================================
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+
+
+---
+# ==============================================================================================
+#  ??? ?????
+#==============================================================================================
+#spring:
+#  servlet:
+#    multipart:
+#      max-file-size: 1000MB
+#      max-request-size: 1000MB
+#      location: D:\\java_folder\\videoChattingService\\src\\main\\resources\\image
