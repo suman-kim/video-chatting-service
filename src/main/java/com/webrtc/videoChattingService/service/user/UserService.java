@@ -2,10 +2,13 @@ package com.webrtc.videoChattingService.service.user;
 
 
 import com.webrtc.videoChattingService.advice.exception.NotFoundException;
+import com.webrtc.videoChattingService.entity.room.Room;
 import com.webrtc.videoChattingService.entity.user.User;
 import com.webrtc.videoChattingService.entity.user.UserDto;
+import com.webrtc.videoChattingService.entity.user.UserSearchParam;
 import com.webrtc.videoChattingService.entity.user.UserVo;
 import com.webrtc.videoChattingService.mapStruct.user.UserMapper;
+import com.webrtc.videoChattingService.repository.room.RoomRepository;
 import com.webrtc.videoChattingService.repository.user.UserRepository;
 import com.webrtc.videoChattingService.response.CommonResult;
 import com.webrtc.videoChattingService.response.ResponseService;
@@ -15,6 +18,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Transactional
 @RequiredArgsConstructor
@@ -27,13 +32,16 @@ public class UserService {
 
     private final FileConfig fileConfig;
 
+    private final RoomRepository roomRepository;
 
     // 조회 : 전체 건
     @Transactional(readOnly = true) // readOnly=true 면 트랜잭션 범위는 유지하되 조회 기능만 남겨두어 조회 속도가 개선된다.
-    public PageImpl<UserVo> findAll(Pageable pageable) {
-        PageImpl<User> userList = userRepository.getUserList(pageable);
+    public PageImpl<UserVo> findAll(UserSearchParam userSearchParam,Pageable pageable) {
+        PageImpl<User> userList = userRepository.getUserList(userSearchParam,pageable);
+        System.out.println(userList.getContent().get(0).getUserRooms());
+        List<UserVo> userVoList = UserMapper.INSTANCE.toVoList(userList.getContent());
         //dto 변환
-        return new PageImpl<>(UserMapper.INSTANCE.toVoList(userList.getContent()));
+        return new PageImpl<>(userVoList);
 
     }
 

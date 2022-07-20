@@ -2,11 +2,16 @@ package com.webrtc.videoChattingService.entity.user;
 
 
 
+
+import com.webrtc.videoChattingService.entity.userRoom.UserRoom;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 @AllArgsConstructor
 @Getter
@@ -21,6 +26,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
+
 
     @Column(name = "email", unique = true, nullable = false, length = 45)
     private String email;
@@ -40,10 +46,20 @@ public class User {
     @Column(name = "phone", length = 45)
     private String phone;
 
-
     @Column(name = "reg_date", nullable = false)
     private LocalDateTime regDate;
 
+    @Column(name = "login_status")
+    private Integer loginStatus;
+
+    @Column(name = "login_date")
+    private LocalDateTime loginDate;
+
+    @Column(name = "logout_date")
+    private LocalDateTime logoutDate;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<UserRoom> userRooms;
 
     public void updateUser(UserDto userDto) {
         this.nickName = userDto.getNickName();

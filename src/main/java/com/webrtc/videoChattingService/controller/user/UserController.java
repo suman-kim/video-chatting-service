@@ -3,6 +3,7 @@ package com.webrtc.videoChattingService.controller.user;
 
 
 import com.webrtc.videoChattingService.entity.user.UserDto;
+import com.webrtc.videoChattingService.entity.user.UserSearchParam;
 import com.webrtc.videoChattingService.entity.user.UserVo;
 import com.webrtc.videoChattingService.response.CommonResult;
 import com.webrtc.videoChattingService.response.PageResult;
@@ -31,8 +32,8 @@ public class UserController {
 
     @ApiOperation(value = "유저 전체 조회", notes = "유저 전체 조회")
     @GetMapping("/users")
-    public PageResult<UserVo> findAll(Pageable pageable) {
-        return responseService.getPageListResult(userService.findAll(pageable));
+    public PageResult<UserVo> findAll(UserSearchParam userSearchParam, Pageable pageable) {
+        return responseService.getPageListResult(userService.findAll(userSearchParam,pageable));
     }
 
     @ApiOperation(value = "유저 ID로 단건 조회", notes = "유저 ID로 단건 조회")
