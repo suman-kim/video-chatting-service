@@ -2,7 +2,7 @@ package com.webrtc.videoChattingService.service.user;
 
 
 import com.webrtc.videoChattingService.advice.exception.NotFoundException;
-import com.webrtc.videoChattingService.entity.room.Room;
+
 import com.webrtc.videoChattingService.entity.user.User;
 import com.webrtc.videoChattingService.entity.user.UserDto;
 import com.webrtc.videoChattingService.entity.user.UserSearchParam;
@@ -12,6 +12,7 @@ import com.webrtc.videoChattingService.repository.room.RoomRepository;
 import com.webrtc.videoChattingService.repository.user.UserRepository;
 import com.webrtc.videoChattingService.response.CommonResult;
 import com.webrtc.videoChattingService.response.ResponseService;
+import com.webrtc.videoChattingService.response.SingleResult;
 import com.webrtc.videoChattingService.service.business.FileConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageImpl;
@@ -59,7 +60,7 @@ public class UserService {
         User emailValidateUser = EmailValidateUser(userDto.getEmail());
 
         if(emailValidateUser != null){
-            return responseService.getFailResult("중복 이메일입니다.");
+            return responseService.getFailResult("이미 사용중인 이메일입니다.");
         }
 
         String imageUrl = "";
@@ -77,6 +78,30 @@ public class UserService {
 
 
         return responseService.getSuccessResult();
+    }
+
+    //게스트 생성 및 로그인
+    public SingleResult<UserVo> guestLogin(UserDto userDto){
+        User emailValidateUser = EmailValidateUser(userDto.getEmail());
+        System.out.println(userDto.getEmail());
+        if(emailValidateUser != null){
+            return responseService.FailgetSingleResult(UserMapper.INSTANCE.toVo(emailValidateUser), "이미 사용중인 이메일입니다.");
+        }
+        String imageUrl = "";
+        if(userDto.getBase64() != null && userDto.getBase64() != ""){
+            System.out.println(userDto.getBase64());
+            imageUrl = fileConfig.base64Decode(userDto.getBase64());
+            userDto.setImgUrl(imageUrl);
+        }
+
+        System.out.println(userDto);
+        User user = UserMapper.INSTANCE.toEntity(userDto);
+        System.out.println(user);
+        user.insertRegDate();   // 등록일시 추가
+        userRepository.save(user);
+
+
+        return responseService.getSingleResult(UserMapper.INSTANCE.toVo(user));
     }
 
     // 수정 : 전체 항목 수정

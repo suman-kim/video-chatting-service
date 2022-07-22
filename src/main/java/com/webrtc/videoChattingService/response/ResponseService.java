@@ -40,11 +40,20 @@ public class ResponseService {
     }
 
 
-    // 단일건 결과를 처리하는 메소드
+    // 단일건 성공 결과를 처리하는 메소드
     public <T> SingleResult<T> getSingleResult(T data) {
         SingleResult<T> result = new SingleResult<>();
         result.setData(data);
         setSuccessResult(result);
+        return result;
+    }
+
+    // 단일건 실패 결과를 처리하는 메소드
+    public <T> SingleResult<T> FailgetSingleResult(T data,String msg) {
+        SingleResult<T> result = new SingleResult<>();
+        result.setData(data);
+        result.setCode(-1);
+        result.setMsg(msg);
         return result;
     }
 

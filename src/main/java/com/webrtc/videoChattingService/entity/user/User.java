@@ -61,6 +61,8 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<UserRoom> userRooms;
 
+
+
     public void updateUser(UserDto userDto) {
         this.nickName = userDto.getNickName();
         this.imgUrl = userDto.getImgUrl();
