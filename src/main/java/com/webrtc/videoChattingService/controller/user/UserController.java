@@ -62,7 +62,4 @@ public class UserController {
     public SingleResult<UserVo> guestLogin(@RequestBody UserDto userDto){
         return userService.guestLogin(userDto);
     }
-
-
-
 }

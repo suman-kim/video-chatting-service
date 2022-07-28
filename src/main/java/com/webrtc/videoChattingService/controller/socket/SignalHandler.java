@@ -13,7 +13,6 @@ import java.io.IOException;
 @Slf4j
 public class SignalHandler extends TextWebSocketHandler {
 
-
     // message types, used in signalling:
     // text message
     private static final String MSG_TYPE_TEXT = "text";
