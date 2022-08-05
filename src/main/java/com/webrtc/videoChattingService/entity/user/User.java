@@ -3,14 +3,13 @@ package com.webrtc.videoChattingService.entity.user;
 
 
 
+import com.webrtc.videoChattingService.entity.Salt.Salt;
 import com.webrtc.videoChattingService.entity.userRoom.UserRoom;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -28,10 +27,10 @@ public class User {
     private Integer id;
 
 
-    @Column(name = "email", unique = true, nullable = false, length = 45)
+    @Column(name = "email", unique = true, nullable = false, length = 255)
     private String email;
 
-    @Column(name = "password", nullable = false, length = 45)
+    @Column(name = "password", nullable = false, length = 255)
     private String password;
 
     @Column(name = "nick_name", nullable = false, length = 45)
@@ -60,6 +59,15 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<UserRoom> userRooms;
+
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    private UserRole role = UserRole.USER;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "salt_id")
+    private Salt salt;
 
 
 

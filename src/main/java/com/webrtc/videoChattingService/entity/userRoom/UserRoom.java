@@ -4,6 +4,7 @@ import com.webrtc.videoChattingService.entity.user.User;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "user_room")
 public class UserRoom {
 
     @Id

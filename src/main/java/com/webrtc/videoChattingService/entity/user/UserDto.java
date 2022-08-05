@@ -1,6 +1,7 @@
 package com.webrtc.videoChattingService.entity.user;
 
 
+import com.webrtc.videoChattingService.entity.Salt.Salt;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -23,5 +24,6 @@ public class UserDto {
     private String address;
     private String phone;
     private LocalDateTime regDate;
+    private Salt salt;
 
 }

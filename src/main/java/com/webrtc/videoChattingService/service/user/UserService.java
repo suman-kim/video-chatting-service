@@ -1,8 +1,11 @@
 package com.webrtc.videoChattingService.service.user;
 
 
-import com.webrtc.videoChattingService.advice.exception.NotFoundException;
+import com.webrtc.videoChattingService.advice.exception.EmptyException;
 
+
+import com.webrtc.videoChattingService.entity.Salt.Salt;
+import com.webrtc.videoChattingService.entity.Salt.SaltUtil;
 import com.webrtc.videoChattingService.entity.user.User;
 import com.webrtc.videoChattingService.entity.user.UserDto;
 import com.webrtc.videoChattingService.entity.user.UserSearchParam;
@@ -35,6 +38,8 @@ public class UserService {
 
     private final RoomRepository roomRepository;
 
+    private final SaltUtil saltUtil;
+
     // 조회 : 전체 건
     @Transactional(readOnly = true) // readOnly=true 면 트랜잭션 범위는 유지하되 조회 기능만 남겨두어 조회 속도가 개선된다.
     public PageImpl<UserVo> findAll(UserSearchParam userSearchParam,Pageable pageable) {
@@ -51,7 +56,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserVo findById(Integer id) {
         validateUser(id);
-        return UserMapper.INSTANCE.toVo(userRepository.findById(id).orElseThrow(NotFoundException::new));
+        return UserMapper.INSTANCE.toVo(userRepository.findById(id).orElseThrow(EmptyException::new));
     }
 
 
@@ -70,8 +75,15 @@ public class UserService {
             userDto.setImgUrl(imageUrl);
         }
 
+        //비밀번호 암호화
+        String password = userDto.getPassword();
+        String salt = saltUtil.genSalt();
+        userDto.setSalt(new Salt(salt));
+        userDto.setPassword(saltUtil.encodePassword(salt,password));
+
         System.out.println(userDto);
         User user = UserMapper.INSTANCE.toEntity(userDto);
+
         System.out.println(user);
         user.insertRegDate();   // 등록일시 추가
         userRepository.save(user);
@@ -120,7 +132,7 @@ public class UserService {
 
     // ID가 있는지 유효성 검사
     public User validateUser(Integer id) {
-        return userRepository.findById(id).orElseThrow(NotFoundException::new);
+        return userRepository.findById(id).orElseThrow(EmptyException::new);
     }
 
     //이메일 중복검사
