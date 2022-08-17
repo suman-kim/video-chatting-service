@@ -23,13 +23,15 @@ public class ExceptionAdvice {
 
     private MessageSource messageSource;
 
+
+    // NotFoundException 사용 -- message를 받아서 보낸다.
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected CommonResult defaultException(HttpServletRequest request, NotFoundException e) {
         return responseService.getFailDefaultResult(-1,e.getMessage());
     }
 
-
+    // EmptyException 사용
     @ExceptionHandler(EmptyException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected CommonResult EmptyException(HttpServletRequest request , EmptyException e){

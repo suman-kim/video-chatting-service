@@ -1,4 +1,4 @@
-package com.webrtc.videoChattingService.entity.user;
+package com.webrtc.videoChattingService.entity.member;
 
 
 
@@ -16,10 +16,10 @@ import java.util.Set;
 @Getter
 @Entity
 @ToString
-@Table(name = "user")
+@Table(name = "member")
 @NoArgsConstructor
 @Builder
-public class User {
+public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +33,8 @@ public class User {
     @Column(name = "password", nullable = false, length = 255)
     private String password;
 
-    @Column(name = "nick_name", nullable = false, length = 45)
+    @Setter
+    @Column(name = "nick_name", unique = true, nullable = false, length = 45)
     private String nickName;
 
     @Column(name = "img_url")
@@ -57,7 +58,7 @@ public class User {
     @Column(name = "logout_date")
     private LocalDateTime logoutDate;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private Set<UserRoom> userRooms;
 
     @Column(name = "role")
@@ -71,11 +72,12 @@ public class User {
 
 
 
-    public void updateUser(UserDto userDto) {
-        this.nickName = userDto.getNickName();
-        this.imgUrl = userDto.getImgUrl();
-        this.address = userDto.getAddress();
-        this.phone = userDto.getPhone();
+
+    public void updateUser(MemberDto memberDto) {
+        this.nickName = memberDto.getNickName();
+        this.imgUrl = memberDto.getImgUrl();
+        this.address = memberDto.getAddress();
+        this.phone = memberDto.getPhone();
     }
 
     public void insertRegDate(){

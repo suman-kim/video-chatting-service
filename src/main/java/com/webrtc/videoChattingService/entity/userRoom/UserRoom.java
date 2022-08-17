@@ -1,6 +1,6 @@
 package com.webrtc.videoChattingService.entity.userRoom;
 import com.webrtc.videoChattingService.entity.room.Room;
-import com.webrtc.videoChattingService.entity.user.User;
+import com.webrtc.videoChattingService.entity.member.Member;
 import javax.persistence.*;
 
 @Entity
@@ -14,7 +14,7 @@ public class UserRoom {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user")
-    private User user;
+    private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "room")

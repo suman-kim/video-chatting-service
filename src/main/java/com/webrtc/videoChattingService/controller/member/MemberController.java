@@ -1,15 +1,15 @@
-package com.webrtc.videoChattingService.controller.user;
+package com.webrtc.videoChattingService.controller.member;
 
 
 
-import com.webrtc.videoChattingService.entity.user.UserDto;
-import com.webrtc.videoChattingService.entity.user.UserSearchParam;
-import com.webrtc.videoChattingService.entity.user.UserVo;
+import com.webrtc.videoChattingService.entity.member.MemberDto;
+import com.webrtc.videoChattingService.entity.member.MemberVo;
+import com.webrtc.videoChattingService.entity.member.MemberSearchParam;
 import com.webrtc.videoChattingService.response.CommonResult;
 import com.webrtc.videoChattingService.response.PageResult;
 import com.webrtc.videoChattingService.response.ResponseService;
 import com.webrtc.videoChattingService.response.SingleResult;
-import com.webrtc.videoChattingService.service.user.UserService;
+import com.webrtc.videoChattingService.service.member.MemberService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -24,28 +24,28 @@ import org.springframework.web.bind.annotation.*;
         @ApiResponse(code = 404, message = "데이터 없음"),
         @ApiResponse(code = 500, message = "서버 문제 발생")
 })
-public class UserController {
+public class MemberController {
 
-    private final UserService userService;
+    private final MemberService memberService;
 
     private final ResponseService responseService;
 
     @ApiOperation(value = "유저 전체 조회", notes = "유저 전체 조회")
-    @GetMapping("/users")
-    public PageResult<UserVo> findAll(UserSearchParam userSearchParam, Pageable pageable) {
-        return responseService.getPageListResult(userService.findAll(userSearchParam,pageable));
+    @GetMapping("/members")
+    public PageResult<MemberVo> findAll(MemberSearchParam memberSearchParam, Pageable pageable) {
+        return responseService.getPageListResult(memberService.findAll(memberSearchParam,pageable));
     }
 
     @ApiOperation(value = "유저 ID로 단건 조회", notes = "유저 ID로 단건 조회")
-    @GetMapping("/users/{id}")
-    public SingleResult<UserVo> findById(@PathVariable Integer id) {
-        return responseService.getSingleResult(userService.findById(id));
+    @GetMapping("/members/{id}")
+    public SingleResult<MemberVo> findById(@PathVariable Integer id) {
+        return responseService.getSingleResult(memberService.findById(id));
     }
 
     @ApiOperation(value = "회원 정보 수정", notes = "회원 정보 수정")
-    @PutMapping("/users/{id}")
-    public CommonResult update(@PathVariable Integer id, @RequestBody UserDto userDto) {
-        userDto.setId(id);
-        return userService.update(userDto);
+    @PutMapping("/members/{id}")
+    public CommonResult update(@PathVariable Integer id, @RequestBody MemberDto memberDto) {
+        memberDto.setId(id);
+        return memberService.update(memberDto);
     }
 }
