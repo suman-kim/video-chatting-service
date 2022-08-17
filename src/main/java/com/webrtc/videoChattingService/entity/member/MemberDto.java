@@ -1,6 +1,7 @@
-package com.webrtc.videoChattingService.entity.user;
+package com.webrtc.videoChattingService.entity.member;
 
 
+import com.webrtc.videoChattingService.entity.Salt.Salt;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @ToString
-public class UserDto {
+public class MemberDto {
     
     private Integer id;
     private String email;
@@ -23,5 +24,6 @@ public class UserDto {
     private String address;
     private String phone;
     private LocalDateTime regDate;
+    private Salt salt;
 
 }

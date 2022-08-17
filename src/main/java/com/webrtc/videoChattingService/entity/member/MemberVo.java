@@ -1,12 +1,9 @@
-package com.webrtc.videoChattingService.entity.user;
+package com.webrtc.videoChattingService.entity.member;
 
 
-import com.webrtc.videoChattingService.entity.room.Room;
-import com.webrtc.videoChattingService.entity.userRoom.UserRoom;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @Builder
 @AllArgsConstructor
@@ -14,7 +11,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @ToString
-public class UserVo {
+public class MemberVo {
 
     private Integer id;
     private String email;

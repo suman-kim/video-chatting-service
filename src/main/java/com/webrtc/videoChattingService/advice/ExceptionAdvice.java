@@ -23,17 +23,19 @@ public class ExceptionAdvice {
 
     private MessageSource messageSource;
 
+
+    // NotFoundException 사용 -- message를 받아서 보낸다.
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected CommonResult defaultException(HttpServletRequest request, NotFoundException e) {
-        return responseService.getFailDefaultResult(-1,"데이터가 없습니다.");
+        return responseService.getFailDefaultResult(-1,e.getMessage());
     }
 
-
+    // EmptyException 사용
     @ExceptionHandler(EmptyException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected CommonResult EmptyException(HttpServletRequest request , EmptyException e){
-        return responseService.getFailDefaultResult(-1,e.getMessage());
+        return responseService.getFailDefaultResult(-1,"데이터가 없습니다.");
     }
 
     // code정보에 해당하는 메세지를 조회합니다.
